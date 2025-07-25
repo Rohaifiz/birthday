@@ -116,7 +116,7 @@ body {
         font-weight: 500;
         text-align: center;
     }
-    span { color: orangered; }
+    span { color: #5560ff; }
     div.button {
         background: #1e1e1e; padding: 6px 42px 8px 42px;
         border-radius: 12px; color: #fff;
@@ -190,3 +190,4 @@ body:has(div.selectedPane) div#back-btn {
 body:has(div.selectedPane) div.tp-dfwv {
     display: none;
 }
+

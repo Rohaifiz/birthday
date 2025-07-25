@@ -1,11 +1,26 @@
-import {Pane} from 'https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js';
-
-let density = 5;
+let density = 3;
 let distance = 0;
-let speed = 200;
+let speed = 200; // Faster loading (every 200ms)
 const directions = ['top', 'right', 'bottom', 'left'];
 let isPaused = false;
-const images = ["https://picsum.photos/id/106/900/500","https://picsum.photos/id/115/900/500","https://picsum.photos/id/116/900/500","https://picsum.photos/id/124/900/500","https://picsum.photos/id/126/900/500","https://picsum.photos/id/130/900/500","https://picsum.photos/id/143/900/500","https://picsum.photos/id/152/900/500","https://picsum.photos/id/167/900/500","https://picsum.photos/id/190/900/500","https://picsum.photos/id/191/900/500","https://picsum.photos/id/193/900/500","https://picsum.photos/id/195/900/500","https://picsum.photos/id/204/900/500","https://picsum.photos/id/227/900/500","https://picsum.photos/id/251/900/500","https://picsum.photos/id/253/900/500","https://picsum.photos/id/256/900/500","https://picsum.photos/id/257/900/500","https://picsum.photos/id/259/900/500","https://picsum.photos/id/271/900/500","https://picsum.photos/id/274/900/500","https://picsum.photos/id/277/900/500","https://picsum.photos/id/278/900/500","https://picsum.photos/id/289/900/500","https://picsum.photos/id/291/900/500","https://picsum.photos/id/296/900/500","https://picsum.photos/id/299/900/500","https://picsum.photos/id/306/900/500","https://picsum.photos/id/308/900/500","https://picsum.photos/id/318/900/500","https://picsum.photos/id/327/900/500","https://picsum.photos/id/337/900/500","https://picsum.photos/id/339/900/500","https://picsum.photos/id/376/900/500","https://picsum.photos/id/381/900/500","https://picsum.photos/id/392/900/500","https://picsum.photos/id/395/900/500","https://picsum.photos/id/402/900/500","https://picsum.photos/id/411/900/500","https://picsum.photos/id/419/900/500","https://picsum.photos/id/424/900/500","https://picsum.photos/id/428/900/500"];
+
+const images = [
+  "Picture/img1.jpg",
+  "Picture/img2.jpg",
+  "Picture/img3.jpg",
+  "Picture/img4.jpg",
+  "Picture/img6.jpg",
+  "Picture/img8.jpg",
+  "Picture/img9.jpg",
+  "Picture/img10.jpg",
+  "Picture/img12.jpg",
+  "Picture/img13.jpg",
+  "Picture/img14.jpg",
+  "Picture/img15.jpg",
+  "Picture/img16.jpg",
+  "Picture/img17.jpg",
+  "Picture/img18.jpg"
+];
 
 function preloadImages(srcArray, callback) {
   let loaded = 0;
@@ -86,8 +101,8 @@ function pauseInterval() {
 }
 
 function resumeInterval() {
-document.querySelector('.selected')?.classList.remove('selected');
-document.querySelector('.selectedPane')?.classList.remove('selectedPane');
+  document.querySelector('.selected')?.classList.remove('selected');
+  document.querySelector('.selectedPane')?.classList.remove('selectedPane');
   if (!isPaused) return;
   isPaused = false;
   startImageInterval();
@@ -110,43 +125,12 @@ function animateDistance(toValue, duration = 600) {
     const eased = 1 - Math.pow(1 - progress, 3);
     distance = fromValue + (toValue - fromValue) * eased;
     el.style.setProperty('--rev-dis', distance.toFixed(2));
-    PARAMS.distance = Math.round(distance);
-    pane.refresh();
     if (progress < 1) requestAnimationFrame(update);
   }
-
   requestAnimationFrame(update);
 }
 
 document.addEventListener('allImagesLoaded', () => {
   document.body.classList.add('all-loaded');
-  console.log(`
-    Trigger for all images being loaded. 
-    Idea maybe to unload after a set time of loaded and refresh?
-  `);
+  console.log('All images loaded!');
 });
-
-/* js gui */
-const PARAMS = {
-  size: density,
-  distance: 0,
-  speed: speed,
-};
-
-const pane = new Pane();
-const size = pane.addBinding( PARAMS, 'size', {min: 2, max: 8, step: 1});
-size.on('change', function(ev) {
-  density = ev.value;
-  renderWalls();
-});
-const dis = pane.addBinding( PARAMS, 'distance', {min: 0, max: 100, step: 1} );
-dis.on('change', function(ev) {
-  distance = ev.value;
-  document.querySelector('.inf-grid-hero-container').style.setProperty('--rev-dis', distance);
-});
-const spd = pane.addBinding( PARAMS, 'speed', {min: 50, max: 400, step: 50} );
-spd.on('change', function(ev) {
-  speed = ev.value;
-  startImageInterval();
-});
-
